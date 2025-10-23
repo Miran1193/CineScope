@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div>
+    <h2>Profile</h2>
+    <div>
+        <p>{{ user.username }}</p>
+        <p>{{ user.first_name }}</p>
+        <p>{{ user.last_name }}</p>
+    </div>
+    <div>
+        {% for favorite in favorites %}
+            <p><a href {% url 'movies:movie_detail' movie_favorite.pk %}>{{ movie_favorite.title }}</a></p>
+        {% empty %}
+            <p>Not favorite a movie</p>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Movies{% endblock %}
+
+{% block content %}
+    {% for movie in movies%}
+        <div>
+            <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.title }}</a>
+            <img src="{{ movie.poster_url }}" alt="">
+            <p>{{ movie.description|truncatewords:30 }}</p>
+            {% if movie.genre %}
+                <p>{{ movie.genre }}</p>
+            {% endif %}
+            <p><small>Created: {{ movie.created|date:"d.m.Y H:i" }}</small></p>
+        </div>
+    {% empty %}
+        <p>No movies yet.</p>
+    {% endfor %}
+{% endblock %}

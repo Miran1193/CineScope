@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ movie.title }}{% endblock %}
+{% block content %}
+    <div>
+        <h2>{{ movie.title }}</h2>
+        <img src="{{ 'movie.psoter_url' }}">
+        <div>
+            <p>{{ movie.description}}</p>
+        </div>
+    </div>
+    <div>
+        {{ reviews.avg }}
+        {% for review in reviews %}
+            <div>
+                <p><a href="{% url 'movies:review_update' review_pk=reviews.pk pk=movie.pk %}">{{ review.text }}</a></p>
+            </div>
+        {% empty %}
+            <p><a href="{% url 'movies:review_create' pk=movie.pk %}">Add comment</a></p>
+        {% endfor %}
+    </div>
+{% endblock %}

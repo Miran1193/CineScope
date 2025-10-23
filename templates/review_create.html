@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+    {% if form.instance.pk %}Edit Comment{% else %}Add Comment{% endif %}
+{% endblock %}
+{% block content %}
+    <h2>{% if form.instance.pk %}Edit Comment{% else %}Add Comment{% endif %}</h2>
+    <form method=post>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type='submit'>{% if form.instance.pk%}Edit{% else %}Add{% endif %}
+    </form>
+{% endblock %}
