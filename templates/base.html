@@ -21,7 +21,7 @@
                     <ul>
                         {% if user.is_authenticated %}
                             <li>
-                                <a href="{% url 'movies:profile' %}">{{ self.request.user.username}}</a>
+                                <a href="{% url 'movies:favorites' %}">{{ user.username}}</a>
                             </li>
                             <li>
                                 <form method='post' action="{% url 'movies:logout' %}">

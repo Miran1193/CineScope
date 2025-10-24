@@ -9,10 +9,12 @@
         <p>{{ user.last_name }}</p>
     </div>
     <div>
-        {% for favorite in favorites %}
-            <p><a href {% url 'movies:movie_detail' movie_favorite.pk %}>{{ movie_favorite.title }}</a></p>
-        {% empty %}
-            <p>Not favorite a movie</p>
-        {% endfor %}
+        <ul>
+            {% for fav in favorites %}
+                    <li><a href="{% url 'movies:movie_detail' fav.movie.pk %}">{{ fav.movie.title }}</a></li>
+            {% empty %}
+                <p>Not favorite a movie</p>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

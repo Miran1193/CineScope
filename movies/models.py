@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -27,14 +28,20 @@ class Movie(models.Model):
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='review_user')
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='riview_movie')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='review_movie')
     text = models.TextField(blank=True, null=True)
     rating = models.PositiveSmallIntegerField()
     created = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
+    def clean(self):
+        # Валидация происходит здесь, до сохранения
         if self.rating and (self.rating < 1 or self.rating > 10):
-            raise ValueError('Оценка должна быть от 1 до 10')
+            raise ValidationError('Оценка должна быть от 1 до 10')
+
+    def save(self, *args, **kwargs):
+        # Вызов метода clean() для валидации перед сохранением
+        self.clean()
+        super().save(*args, **kwargs)
    
     def __str__(self):
         return f"{self.user.username} - {self.movie.title}"
@@ -46,7 +53,7 @@ class Review(models.Model):
     
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_favorite')
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_favorite')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='favorites')
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

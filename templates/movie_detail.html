@@ -3,16 +3,30 @@
 {% block content %}
     <div>
         <h2>{{ movie.title }}</h2>
-        <img src="{{ 'movie.psoter_url' }}">
+        <img src="{{ movie.psoter_url }}">
         <div>
             <p>{{ movie.description}}</p>
         </div>
     </div>
     <div>
+        {% if user.is_authenticated %}
+            <form action="{% url 'movies:toggle_favorite' movie.pk %}" method='post'>
+                {% csrf_token %}
+                {% if is_favorite %}
+                    <button type='submit'> Remove from Favorites</button>
+                {% else %}
+                    <button type='submit'> Add to Favorites</button>
+                {% endif %}
+            </form>
+        {% else %}
+            <p><a href="{% url 'movies:login' %}">Login</a> to add to Favorites</p>
+        {% endif %}
+    </div>
+    <div>
         {{ reviews.avg }}
         {% for review in reviews %}
             <div>
-                <p><a href="{% url 'movies:review_update' review_pk=reviews.pk pk=movie.pk %}">{{ review.text }}</a></p>
+                <p><a href="{% url 'movies:review_update' review_pk=review.pk pk=movie.pk %}">{{ review.text }}</a></p>
             </div>
         {% empty %}
             <p><a href="{% url 'movies:review_create' pk=movie.pk %}">Add comment</a></p>

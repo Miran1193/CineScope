@@ -14,6 +14,9 @@
                 {{ field.errors }}
             </div>
         {% endfor %}
-        <button type='submit'>{% if form.instance.pk%}Edit{% else %}Add{% endif %}
+        <button type='submit'>{% if form.instance.pk%}Edit{% else %}Add{% endif %}</button>
+    </form>
+    <form method='post' action="{% url 'movies:review_delete' pk=movie.pk review_pk=review.pk %}">
+        <button type='submit'>Delete</button>
     </form>
 {% endblock %}
